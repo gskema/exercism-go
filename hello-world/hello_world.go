@@ -10,7 +10,7 @@ const testVersion = 3
 // If no name is supplied, greets the world.
 func HelloWorld(name string) string {
 	if len(name) > 0 {
-		return "Hello, " + name + "!";
+		return "Hello, " + name + "!"
 	}
 
 	return "Hello, World!"
