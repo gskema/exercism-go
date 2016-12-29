@@ -1,26 +1,45 @@
-// Clock stub file
-
-// To use the right term, this is the package *clause*.
-// You can document general stuff about the package here if you like.
+/*
+Package clock provides Clock type
+*/
 package clock
 
-// The value of testVersion here must match `targetTestVersion` in the file
-// clock_test.go.
+import "fmt"
+
 const testVersion = 4
 
-// Clock API as stub definitions.  No, it doesn't compile yet.
-// More details and hints are in clock_test.go.
-
-type Clock // Complete the type definition.  Pick a suitable data type.
-
-func New(hour, minute int) Clock {
+type Clock struct {
+	hours, minutes int
 }
 
-func (Clock) String() string {
+// Creates and returns a new Clock
+func New(hours, minutes int) Clock {
+	const minutesInDay = 24 * 60
+	var visibleHours, visibleMinutes, totalMinutes int
+
+	// Convert everything to total minutes
+	totalMinutes = (hours * 60) + minutes
+
+	// Make sure our minutes fit within the day range
+	// This also takes care of 24:00 -> 00:00
+	totalMinutes %= minutesInDay
+
+	// Minutes may be negative, normalize them
+	if totalMinutes < 0 {
+		totalMinutes += minutesInDay
+	}
+
+	visibleMinutes = totalMinutes % 60
+	visibleHours = (totalMinutes - visibleMinutes) / 60
+
+	return Clock{visibleHours, visibleMinutes}
 }
 
-func (Clock) Add(minutes int) Clock {
+// Outputs Clock in String form
+func (c Clock) String() string {
+	return fmt.Sprintf("%02d:%02d", c.hours, c.minutes)
 }
 
-// Remember to delete all of the stub comments.
-// They are just noise, and reviewers will complain.
+// Creates a new clock by adding X minutes
+func (c Clock) Add(minutes int) Clock {
+	return New(c.hours, c.minutes+minutes)
+}
