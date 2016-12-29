@@ -3,7 +3,6 @@ Package leap provides leap year calculation function
 */
 package leap
 
-// testVersion should match the targetTestVersion in the test file.
 const testVersion = 2
 
 // Returns true when year is a leap year
