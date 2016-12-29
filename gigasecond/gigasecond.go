@@ -1,10 +1,13 @@
-// Package clause.
+// Package gigasecond provides function to calculate time
+// when someone has lived for a gigasecond
 package gigasecond
 
-// Constant declaration.
-const testVersion = ? // find the value in gigasecond_test.go
+import "time"
 
-// API function.  It uses a type from the Go standard library.
-func AddGigasecond(time.Time) time.Time
+const testVersion = 4
 
-// Reviewers don't think much of stub comments.  Replace or remove.
+// Calculates time when someone has lived for a gigasecond
+// 10^9 = 1000000000
+func AddGigasecond(birthday time.Time) time.Time {
+	return birthday.Add(time.Duration(1000000000) * time.Second)
+}
