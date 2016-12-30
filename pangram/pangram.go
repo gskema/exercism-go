@@ -5,6 +5,10 @@ const testVersion = 1
 
 // IsPangram returns true when a sentence is a pangram. ASCII only
 func IsPangram(sentence string) bool {
+	if (len(sentence) < 26) {
+		return false
+	}
+
 	var letters = make(map[rune]bool)
 
 	// ascii ~ 0-127, a-z ~ 97-122, A-Z 65-90
