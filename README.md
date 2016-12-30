@@ -1,5 +1,7 @@
 # Go Solutions for exercism.io
 
+[exercism.io](http://exercism.io/)
+
 #### Download next exercise
 
 ```
