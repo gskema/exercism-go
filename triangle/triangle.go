@@ -8,84 +8,35 @@ const testVersion = 3
 type Kind int
 
 const (
-	NaT Kind = iota // not a triangle
-	Equ				// equilateral
-	Iso				// isosceles
-	Sca				// scalene
-	Deg				// degenerate
+	NaT Kind = iota // 0 not a triangle
+	Deg				// 1 degenerate
+	Equ				// 2 equilateral
+	Iso				// 3 isosceles
+	Sca				// 4 scalene
 )
-
-// IsLength checks if given float64 can be a valid triangle side length
-func IsLength(length float64) bool {
-	return length >= 0 && !math.IsNaN(length) && !math.IsInf(length, 0)
-}
-
-// IsTriangle checks if side lengths a,b,c can form a triangle
-func IsTriangle(a, b, c float64) bool {
-	hasValidSides := IsLength(a) && IsLength(b) && IsLength(c)
-	hasAtLeastOneSide := a+b+c > 0
-	sidesCanConnect := a+b >= c && a+c >= b && b+c >= a
-
-	return hasValidSides && hasAtLeastOneSide && sidesCanConnect
-}
-
-// IsDegenerate calculates if a triangle looks like a line (all 3 points on the same line)
-func IsDegenerate(a, b, c float64) bool {
-	if !IsTriangle(a, b, c) {
-		return false
-	}
-
-	// Ones side is of 0 length
-	if a == 0 || b == 0 || c == 0 {
-		return true
-	}
-
-	// Length of longest side is equal to the sum of the two other sides
-	if b+c == a || a+c == b || a+b == c {
-		return true
-	}
-
-	return false
-}
-
-// IsEquilateral calculates if a triangle is an equilateral triangle (with three equal sides)
-func IsEquilateral(a, b, c float64) bool {
-	if !IsTriangle(a, b, c) {
-		return false
-	}
-	return a == b && b == c
-}
-
-// IsIsosceles calculates if a triangle is an Isoceles triangle (with two equal sides)
-func IsIsosceles(a, b, c float64) bool {
-	if !IsTriangle(a, b, c) {
-		return false
-	}
-	return a == b || a == c || b == c
-}
-
-// IsScalene calculates if a triangle has unequal (all 3) sides
-func IsScalene(a, b, c float64) bool {
-	if !IsTriangle(a, b, c) {
-		return false
-	}
-	return a != b && a != c && b != c
-}
 
 // KindFromSides returns triangle kind by side lengths
 func KindFromSides(a, b, c float64) Kind {
-	switch true {
-	case !IsTriangle(a, b, c):
-		return NaT
-	//case IsDegenerate(a, b, c):
-	//	return Deg
-	case IsEquilateral(a, b, c):
-		return Equ
-	case IsIsosceles(a, b, c):
-		return Iso
-	case IsScalene(a, b, c):
-		return Sca
+	// All sides must be valid number (can be 0)
+	for _, side := range []float64{a, b, c} {
+		if math.IsNaN(side) || math.IsInf(side, 0) || (side < 0) {
+			return NaT;
+		}
 	}
 
-	return NaT
+	// At least one side must have length and all sides must connect (inequality theorem)
+	if !(a + b + c > 0 && a+b >= c && a+c >= b && b+c >= a) {
+		return NaT;
+	}
+
+	switch {
+	//case a * b * c == 0 || b+c == a || a+c == b || a+b == c:
+	//	return Deg
+	case a == b && b == c: // 3 equal sides: equilateral
+		return Equ
+	case a == b || a == c || b == c: // two equal side: isoceles
+		return Iso
+	default: // all side unequal: scalene
+		return Sca
+	}
 }
