@@ -49,7 +49,7 @@ func IsDegenerate(a, b, c float64) bool {
 	return false
 }
 
-// IsIsosceles calculates if a triangle is an equilateral triangle (with three equal sides)
+// IsEquilateral calculates if a triangle is an equilateral triangle (with three equal sides)
 func IsEquilateral(a, b, c float64) bool {
 	if !IsTriangle(a, b, c) {
 		return false
@@ -73,7 +73,7 @@ func IsScalene(a, b, c float64) bool {
 	return a != b && a != c && b != c
 }
 
-// Code this function.
+// KindFromSides returns triangle kind by side lengths
 func KindFromSides(a, b, c float64) Kind {
 	switch true {
 	case !IsTriangle(a, b, c):
