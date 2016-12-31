@@ -9,10 +9,10 @@ type Kind int
 
 const (
 	NaT Kind = iota // 0 not a triangle
-	Deg				// 1 degenerate
-	Equ				// 2 equilateral
-	Iso				// 3 isosceles
-	Sca				// 4 scalene
+	Deg             // 1 degenerate
+	Equ             // 2 equilateral
+	Iso             // 3 isosceles
+	Sca             // 4 scalene
 )
 
 // KindFromSides returns triangle kind by side lengths
@@ -20,13 +20,13 @@ func KindFromSides(a, b, c float64) Kind {
 	// All sides must be valid number (can be 0)
 	for _, side := range []float64{a, b, c} {
 		if math.IsNaN(side) || math.IsInf(side, 0) || (side < 0) {
-			return NaT;
+			return NaT
 		}
 	}
 
 	// At least one side must have length and all sides must connect (inequality theorem)
-	if !(a + b + c > 0 && a+b >= c && a+c >= b && b+c >= a) {
-		return NaT;
+	if !(a+b+c > 0 && a+b >= c && a+c >= b && b+c >= a) {
+		return NaT
 	}
 
 	switch {
