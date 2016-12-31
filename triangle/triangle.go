@@ -5,16 +5,15 @@ import "math"
 
 const testVersion = 3
 
-type Kind struct {
-	name string
-}
+type Kind int
 
-// Pick values for the following identifiers used by the test program.
-var NaT = Kind{"NaT"} // not a triangle
-var Equ = Kind{"Equ"} // equilateral
-var Iso = Kind{"Iso"} // isosceles
-var Sca = Kind{"Sca"} // scalene
-var Deg = Kind{"Deg"} // degenerate
+const (
+	NaT Kind = iota // not a triangle
+	Equ				// equilateral
+	Iso				// isosceles
+	Sca				// scalene
+	Deg				// degenerate
+)
 
 // IsLength checks if given float64 can be a valid triangle side length
 func IsLength(length float64) bool {
